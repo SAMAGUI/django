@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-c)vq8q!a_2_tq)2qr^8v@btr_(g8nm)n^c6zz&4&5^g-%sh-q!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["node41a.containers.back4app.com", "djangoapp-0bjbxt3m.b4a.run"]
+ALLOWED_HOSTS = ["node41a.containers.back4app.com", "djangoapp-0bjbxt3m.b4a.run", "127.0.0.1"]
 
 
 # Application definition
@@ -37,7 +38,36 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'myapp.apps.MyappConfig',
+
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+    # 'djoser',
+    # 'corsheaders',
+    'drf_yasg',
 ]
+
+
+#configure DRF
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT', 'Bearer'),
+   'ACCESS_TOKEN_LIFETIME': timedelta(days=10),
+   'RESFRESH_TOKEN_LIFETIME': timedelta(days=10),
+#    'TOKEN_OBTAIN_SERIALIZER': 'account.serializers.CustomTokenObtainPairSerializer'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
